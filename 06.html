@@ -5,9 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="https://gw.alipayobjects.com/os/antv/assets/favoricon.png">
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.3.2/dist/g2.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.9.6/dist/data-set.min.js"></script>
     <title>Document</title>
 </head>
 <body>
-    
+    <div id="box"></div>
+    <script>
+        var data = [
+            {
+                item:'香蕉',
+                count:12,
+                percenr:0.12
+            },
+            {
+                item:'苹果',
+                count:20,
+                percent:0.2
+            },
+            {
+                item:'水果',
+                count:8,
+                percent:0.08
+            },
+            {
+                item:'橘子',
+                count:12,
+                percent:0.12
+            },
+            {
+                item:'葡萄',
+                count:48,
+                percent:0.48
+            }
+        ];
+        var chart = new G2.Chart({
+            container:'box',
+            width:600,
+            height:400
+        });
+        chart.source(data,{
+            percent:{
+                formatter:function formatter(val){
+                    val = val* 100 + '%';
+                    return val;
+                }
+            }
+        });
+        chart.coord('theta',{
+            radius:0.75
+        });
+        chart.tooltip({
+            showTitle:false,
+            itemTpl:'<li><span style="background-color:{color};" class="g2-tooltip-marker"></span></li>'
+        });
+        chart.intervalStack().position('percenr').color('item').label('percent',{
+            formatter:function formatter(val,item){
+                return item.point.item + ':' + val;
+            }
+        }).tooltip('item*percent',function(item,percent){
+            percent = percent*100+'%';
+
+            return{
+                name:item,
+                value:percent
+            }
+        }).style({
+            innerWidth:1,
+            stroke:'#fff'
+        });
+        chart.render();
+    </script>
 </body>
 </html>
